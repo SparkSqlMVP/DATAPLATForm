@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>模拟登陆</title>
+    <script type="text/javascript">
+        var xmlHttp;
+        function createXMLHttpRequest() {
+            if (window.ActiveXObject) {
+                xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            else if (window.XMLHttpRequest) {
+                xmlHttp = new XMLHttpRequest();
+            }
+        }
+
+        function startRequest() {
+            if (userid.value == "") {
+                alert("请输入用户名!");
+                userid.focus();
+            }
+            else if (password.value == "") {
+                alert("请输入密码!");
+                password.focus();
+            }
+            else {
+                createXMLHttpRequest();
+                xmlHttp.onreadystatechange = handleStateChange;
+                xmlHttp.open("GET", "https://powerbi.waicloud.co/reportsPBI/", true, userid.value, password.value);
+                xmlHttp.open("GET", "https://powerbi.waicloud.co/portal/", true, userid.value, password.value);
+                xmlHttp.send(null);
+            }
+        }
+
+        function handleStateChange() {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
+                    window.location = "https://powerbi.waicloud.co/portal/";
+                }
+                else {
+                    alert("您的用户名或者密码不正确，请联系管理员!");
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <p>
+        UserId:<input type="text" name="userid">
+    </p>
+    <p>
+        Password:<input type="password" name="password">
+    </p>
+    <p>
+        <input type="submit" name="Submit" value="提交" onclick="javascript:startRequest();">
+    </p>
+</body>
+</html>

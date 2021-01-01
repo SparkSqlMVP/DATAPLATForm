@@ -1,0 +1,25 @@
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+	var frame = '<iframe width="100%" height="100%" src="http://192.168.26.56/ReportsPBI/powerbi/Kiosk?rs:embed=true&filterPanelEnabled=False&filter=staff%2FCostCenter%20in%20(%27Accounts%27)"></iframe>';
+	$("#framecontainer").append(frame);
+})
+</script>
+<style>
+	.ms-webpartPage-root{border-spacing:0;}
+	#reportcontainer{width:910px;height:750px;}
+	#framecontainer{float:left;width:875px;height:750px;}
+	#shield{
+           position:relative;
+           float:left;
+           width:34px;
+           height:750px;
+           background:white;
+           left:-34px;
+        }
+</style>
+<div id="reportcontainer">
+<div id="framecontainer"></div>
+<div id="shield"></div>
+<div style="clear:both;"></div>
+</div>

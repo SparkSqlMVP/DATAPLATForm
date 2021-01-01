@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerBITest", "PowerBITest.csproj", "{893B098D-C561-4C7B-9D6F-A53B12A6ECCC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{893B098D-C561-4C7B-9D6F-A53B12A6ECCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893B098D-C561-4C7B-9D6F-A53B12A6ECCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893B098D-C561-4C7B-9D6F-A53B12A6ECCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893B098D-C561-4C7B-9D6F-A53B12A6ECCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D2819E0-837D-44FA-B61F-0189AB4A003D}
+	EndGlobalSection
+EndGlobal

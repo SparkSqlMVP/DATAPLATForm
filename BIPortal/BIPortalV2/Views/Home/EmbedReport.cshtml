@@ -1,0 +1,124 @@
+﻿@model BIPortalV2.Models.EmbedConfig
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard - SB Admin</title>
+</head>
+<body>
+
+    <script src="https://npmcdn.com/es6-promise@3.2.1"></script>
+    <script src="~/scripts/powerbi.js"></script>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div id="errorWrapper">
+            <h2>
+                Error
+            </h2>
+            <pre>
+            @Model.ErrorMessage
+        </pre>
+        </div>
+
+        return;
+    }
+
+    <div class="container-fluid">
+        <h1 class="mt-4">Power BI </h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="index">Data Platform Portal </a></li>
+            <li class="breadcrumb-item active">Intergration Power BI</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-body">
+                PowerBI is a third party plugin that is used to generate the demo below. 
+                For more information about how to intergarte, please contact the
+                <h6><font color="blue">sparksqlmvp@gmail.com</font></h6>
+            </div>
+        </div>
+        </div>
+        <div id="embedContainer" class="container-fluid" style="height:470px"></div>
+
+        <script>
+    // Read embed application token from Model
+    var accessToken = "@Model.EmbedToken.Token";
+
+    // Read embed URL from Model
+    var embedUrl = "@Html.Raw(Model.EmbedUrl)";
+
+    // Read report Id from Model
+    var embedReportId = "@Model.Id";
+
+    // Get models. models contains enums that can be used.
+    var models = window['powerbi-client'].models;
+
+    // Embed configuration used to describe the what and how to embed.
+    // This object is used when calling powerbi.embed.
+    // This also includes settings and options such as filters.
+    // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+    var config = {
+        type: 'report',
+        tokenType: models.TokenType.Embed,
+        accessToken: accessToken,
+        embedUrl: embedUrl,
+        id: embedReportId,
+        permissions: models.Permissions.All,
+        settings: {
+            filterPaneEnabled: true,
+            navContentPaneEnabled: true
+        }
+    };
+
+    // Get a reference to the embedded report HTML element
+    var reportContainer = $('#embedContainer')[0];
+
+    if ("@Model.Username" != "") {
+        $("#RLS").prop('checked', true);
+        $("#RLSdiv").show();
+    }
+    else
+    {
+        $("#RLS").prop('checked', false);
+        $("#RLSdiv").hide();
+    }
+
+    if ("@Model.IsEffectiveIdentityRequired.GetValueOrDefault()" == "True") {
+        $("#noRLSdiv").hide();
+        $("#RLS").removeAttr("disabled");
+        $("#RLS").change(function () {
+            if ($(this).is(":checked")) {
+                $("#RLSdiv").show(300);
+            } else {
+                $("#RLSdiv").hide(200);
+            }
+        });
+    }
+    else
+    {
+        $("#noRLSdiv").show();
+    }
+    // Embed the report and display it within the div container.
+    var report = powerbi.embed(reportContainer, config);
+        </script>
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="~/content/js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+
+</body>
+</html>

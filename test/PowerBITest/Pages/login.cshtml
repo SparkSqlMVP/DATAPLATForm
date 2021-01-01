@@ -1,0 +1,66 @@
+﻿@page
+@model PowerBITest.Pages.loginModel
+@{
+    ViewData["Title"] = "login";
+}
+<html>
+<head>
+    <title>模拟登陆</title>
+    <script type="text/javascript">
+        var xmlHttp;
+        function createXMLHttpRequest() {
+            if (window.ActiveXObject) {
+                xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            else if (window.XMLHttpRequest) {
+                xmlHttp = new XMLHttpRequest();
+            }
+        }
+
+        function startRequest() {
+            userid = document.getElementById('userid')
+            password = document.getElementById('password')
+
+
+            if (userid.value == "") {
+                alert("请输入用户名!");
+                userid.focus();
+            }
+            else if (password.value == "") {
+                alert("请输入密码!");
+                password.focus();
+            }
+            else {
+                createXMLHttpRequest();
+                xmlHttp.onreadystatechange = handleStateChange;
+                xmlHttp.open("GET", "https://powerbi.waicloud.co/ReportsPBI/", true, userid.value, password.value);
+                xmlHttp.open("GET", "https://localhost:44334/portal/", true, userid.value, password.value);
+                xmlHttp.send(null);
+            }
+        }
+
+        function handleStateChange() {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
+                    window.location = "https://localhost:44334/portal/";
+                }
+                else {
+                    alert("您的用户名或者密码不正确，请联系管理员!");
+                }
+            }
+        }
+
+/**/</script>
+</head>
+<body>
+    <p>
+        UserId:<input type="text" name="userid" id="userid" value="spark.zhou">
+    </p>
+    <p>
+        Password:<input type="password" name="password" id="password" value="Password1">
+    </p>
+    <p>
+        <input type="submit" name="Submit" value="提交" onclick="javascript:startRequest();">
+    </p>
+</body>
+</html>

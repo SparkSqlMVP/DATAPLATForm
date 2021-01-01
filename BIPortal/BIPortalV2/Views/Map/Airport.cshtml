@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Airport";
+}
+<link rel="shortcut icon" href="~/images/system.png" type="image/x-icon" />
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/ApiSetting.js" type="text/javascript"></script>
+<script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AtWelBtjcAze788ADmnFseLzr0tkCtz-_Nqe1tsPdMcwo3-80KYsS5HLsDBEYEWe&callback=loadMapScenario' async defer></script>
+<script>
+
+    $(function () {
+        $.getJSON(ipapi,
+            function (result) {
+                console.log(result);
+
+            })
+    });
+</script>
+
+<div id='myMap' style='margin:20px; width:95vw;height:80vh;'></div>
+
+
+<script type='text/javascript'>
+
+
+    var airportlocations;
+    jQuery.ajax({
+        url: "AirportList",
+        type: "Get",
+        dataType: "json",
+        success: function (response) {
+            airportlocations = response.data;
+        }
+    });
+
+    function loadMapScenario() {
+        var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+            center: new Microsoft.Maps.Location(38.89678, 104.387),
+            mapTypeId: Microsoft.Maps.MapTypeId.road,
+            zoom: 4
+        });
+
+
+        //Create an infobox at the center of the map but don't show it.
+        infobox = new Microsoft.Maps.Infobox(map.getCenter(), {
+            visible: false
+        });
+        //Assign the infobox to a map instance.
+        infobox.setMap(map);
+
+        console.log(airportlocations);
+        if (typeof(airportlocations) == "undefined") {
+
+            jQuery.ajax({
+                url: "AirportList",
+                type: "Get",
+               // async: false,
+                dataType: "json",
+                success: function (response) {
+                    airportlocations = response.data;
+                }
+            });
+
+        }
+        console.log(airportlocations);
+
+
+
+        for (var i = 0; i < airportlocations.length; i++) {
+            var pin = new Microsoft.Maps.Pushpin(airportlocations[i],
+                {
+                    icon: '../assets/images/airplane.jpg',
+                    anchor: new Microsoft.Maps.Point(12, 39)
+                }
+            );
+            latitude = airportlocations[i].latitude.substring(0, airportlocations[i].latitude.indexOf(".") + 5);
+            longitude = airportlocations[i].longitude.substring(0, airportlocations[i].longitude.indexOf(".") + 5);
+            //Store some metadata with the pushpin.
+            pin.metadata = {
+                title: '' + airportlocations[i].title,
+                description: '' + airportlocations[i].description + ' (latitude: ' + latitude + ', longitude:' + longitude + ')'
+
+            };
+
+            //Add a click event handler to the pushpin.
+            Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
+
+            //Add pushpin to the map.
+            map.entities.push(pin);
+        }
+
+
+    }
+
+    function pushpinClicked(e) {
+        //Make sure the infobox has metadata to display.
+        if (e.target.metadata) {
+            //Set the infobox options with the metadata of the pushpin.
+            infobox.setOptions({
+                location: e.target.getLocation(),
+                title: e.target.metadata.title,
+                description: e.target.metadata.description,
+                visible: true
+            });
+        }
+    }
+</script>
+
